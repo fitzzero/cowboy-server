@@ -1,0 +1,3 @@
+[submodule "src/cowboy-database"]
+	path = src/cowboy-database
+	url = ssh://git@github.com/fitzzero/cowboy-database
