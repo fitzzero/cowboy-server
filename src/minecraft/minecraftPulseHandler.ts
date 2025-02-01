@@ -27,8 +27,13 @@ export const minecraftPulseHandler = async (event: MinecraftPulseEvent) => {
 }
 
 const handleCreate = async (event: CreateEvent) => {
-  minecraftServer.whitelistAdd(event.created.name)
-  minecraftServer.luckPermsUserSetGroup(event.created.name, 'default')
+  const name = event.created.name
+  minecraftServer.whitelistAdd(name)
+  minecraftServer.luckPermsUserSetGroup(name, 'default')
+  // Hard coded admin for now
+  if (name === 'FitzZero') {
+    minecraftServer.op(name)
+  }
 }
 
 const handleUpdate = async (event: UpdateEvent) => {
