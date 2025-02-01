@@ -53,12 +53,22 @@ export const syncMinecraftPlayerData = async () => {
   logger.start('Syncing Minecraft player data', 'MinecraftPlayerData')
   const localData: LocalPlayerData[] = []
 
+  let files: string[] = []
+
   // Get essential data
   let userDataDir = path.resolve(
     __dirname,
     '../../minecraft-server/plugins/Essentials/userdata'
   )
-  let files = await fs.promises.readdir(userDataDir)
+  try {
+    files = await fs.promises.readdir(userDataDir)
+  } catch (e) {
+    logger.alert(
+      `Failed to read Essentials userdata directory cancelling sync`,
+      'MinecraftPlayerData'
+    )
+    return
+  }
 
   for (const file of files) {
     if (path.extname(file) === '.yml') {
