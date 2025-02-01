@@ -53,6 +53,19 @@ class MinecraftServer {
     this.writeCommand(`say ${message}`)
   }
 
+  // LuckPerms
+  async luckPermsReload() {
+    this.writeCommand('lp reload')
+  }
+
+  async luckPermsUserSetGroup(username: string, group: string) {
+    this.writeCommand(`lp user ${username} parent set ${group}`)
+  }
+
+  async luckPermsUserRemoveGroup(username: string, group: string) {
+    this.writeCommand(`lp user ${username} parent remove ${group}`)
+  }
+
   // OP
   async op(name: string) {
     this.writeCommand(`op ${name}`)

@@ -28,12 +28,14 @@ export const minecraftPulseHandler = async (event: MinecraftPulseEvent) => {
 
 const handleCreate = async (event: CreateEvent) => {
   minecraftServer.whitelistAdd(event.created.name)
+  minecraftServer.luckPermsUserSetGroup(event.created.name, 'default')
 }
 
 const handleUpdate = async (event: UpdateEvent) => {
   //@ts-ignore before exists
   minecraftServer.whitelistRemove(event.before.name)
   minecraftServer.whitelistAdd(event.after.name)
+  minecraftServer.luckPermsUserSetGroup(event.after.name, 'default')
 }
 
 const handleDelete = async (event: DeleteEvent) => {
