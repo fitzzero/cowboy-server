@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "uuid": "47c84788-2534-48b7-beaa-31066caeedda",
+    "name": "FitzZero",
+    "level": 4,
+    "bypassesPlayerLimit": false
+  }
+]
