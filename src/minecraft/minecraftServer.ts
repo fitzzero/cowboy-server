@@ -56,6 +56,14 @@ class MinecraftServer {
     this.writeCommand(`whitelist remove ${name}`)
   }
 
+  async op(name: string) {
+    this.writeCommand(`op ${name}`)
+  }
+
+  async deop(name: string) {
+    this.writeCommand(`deop ${name}`)
+  }
+
   writeCommand(command: string) {
     // If this.ready is false, await wait for 30s then check again
     if (!this.ready) {
