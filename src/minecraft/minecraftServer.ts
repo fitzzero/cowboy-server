@@ -31,15 +31,15 @@ class MinecraftServer {
     })
 
     this.serverProcess.stdout.on('data', data => {
-      console.log(`STDOUT: ${data}`)
-      if (data.toString().includes('[Vault] Checking for Updates')) {
+      console.log(`MC: ${data}`)
+      if (data.toString().includes('For help, type "help"')) {
         this.ready = true
         logger.success('Server is ready!', 'MinecraftServer')
       }
     })
 
     this.serverProcess.stderr.on('data', data => {
-      console.error(`STDERR: ${data}`)
+      console.error(`MC Err: ${data}`)
     })
 
     this.serverProcess.on('close', code => {

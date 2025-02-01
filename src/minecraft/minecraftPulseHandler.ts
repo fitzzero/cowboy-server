@@ -28,17 +28,12 @@ export const minecraftPulseHandler = async (event: MinecraftPulseEvent) => {
 
 const handleCreate = async (event: CreateEvent) => {
   minecraftServer.whitelistAdd(event.created.name)
-  // TODO
-  minecraftServer.op(event.created.name)
 }
 
 const handleUpdate = async (event: UpdateEvent) => {
   //@ts-ignore before exists
   minecraftServer.whitelistRemove(event.before.name)
-  //@ts-ignore before exists
-  minecraftServer.deop(event.before.name)
   minecraftServer.whitelistAdd(event.after.name)
-  minecraftServer.op(event.after.name)
 }
 
 const handleDelete = async (event: DeleteEvent) => {

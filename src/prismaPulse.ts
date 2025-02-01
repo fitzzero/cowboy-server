@@ -8,11 +8,13 @@ const pulse = new PrismaClient().$extends(
 )
 
 export const startPrismaPulse = async () => {
-  const minecraft = await pulse.minecraft.stream()
-
-  for await (const event of minecraft) {
-    minecraftPulseHandler(event)
+  try {
+    const minecraft = await pulse.minecraft.stream()
+    for await (const event of minecraft) {
+      minecraftPulseHandler(event)
+    }
+    logger.success('Ready', 'PrismaPulse')
+  } catch (err: any) {
+    logger.alert(`Error starting Prisma Pulse: ${err.message}`, 'PrismaPulse')
   }
-
-  logger.success('Ready', 'PrismaPulse')
 }
