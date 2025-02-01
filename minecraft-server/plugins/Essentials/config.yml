@@ -328,14 +328,14 @@ player-commands:
 # This is useful if you want superperms-based permissions (with wildcards) for custom permissions plugins.
 # If you wish to use EssentialsX's built-in permissions using the `player-commands` section above, set this to false.
 # Default is true.
-use-bukkit-permissions: true
+use-bukkit-permissions: false
 
 # When this option is enabled, one-time use kits (ie. delay < 0) will be
 # removed from the /kit list when a player can no longer use it
-skip-used-one-time-kits-from-kit-list: false
+skip-used-one-time-kits-from-kit-list: true
 
 # When enabled, armor from kits will automatically be equipped as long as the player's armor slots are empty.
-kit-auto-equip: false
+kit-auto-equip: true
 
 # Determines the functionality of the /createkit command.
 # If this is true, /createkit will give the user a link with the kit code.
@@ -359,15 +359,15 @@ use-nbt-serialization-in-createkit: false
 # Color is not an actual sign, it's for enabling using color codes on signs, when the correct permissions are given.
 
 enabledSigns:
-  #- color
-  #- balance
-  #- buy
-  #- sell
-  #- trade
+  - color
+  - balance
+  - buy
+  - sell
+  - trade
   #- free
   #- warp
   #- kit
-  #- mail
+  - mail
   #- enchant
   #- gamemode
   #- heal

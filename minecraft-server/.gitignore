@@ -18,8 +18,5 @@ cache/
 # Ignore crash reports
 crash-reports/
 
-# Ignore server properties
-server.properties
-
 # Ignore things that server sets
 whitelist.json
