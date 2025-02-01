@@ -1,11 +1,38 @@
 {
   "name": "default",
-  "permissions": {
-    "essentials.help": true,
-    "essentials.spawn": true,
-    "essentials.home": true
-  },
-  "meta": {
-    "prefix": "&7[Default] "
-  }
+  "permissions": [
+    {
+      "permission": "essentials.help",
+      "value": true
+    },
+    {
+      "permission": "essentials.home",
+      "value": true
+    },
+    {
+      "permission": "essentials.home.bed",
+      "value": true
+    },
+    {
+      "permission": "essentials.msg",
+      "value": true
+    },
+    {
+      "permission": "essentials.balance",
+      "value": true
+    },
+    {
+      "permission": "essentials.pay",
+      "value": true
+    },
+    {
+      "permission": "essentials.sell",
+      "value": true
+    },
+    {
+      "permission": "essentials.list",
+      "value": true
+    }
+  ],
+  "prefixes": []
 }

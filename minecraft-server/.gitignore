@@ -25,3 +25,8 @@ whitelist.json
 plugins/Essentials/userdata/
 plugins/AuraSkills/userdata/
 usercache.json
+
+# Ignore console history
+.console_history
+plugins/LuckPerms/json-storage/actions.txt
+plugins/LuckPerms/json-storage/uuidcache.txt
