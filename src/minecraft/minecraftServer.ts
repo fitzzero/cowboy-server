@@ -94,7 +94,11 @@ class MinecraftServer {
     logger.start('Heartbeat', 'MinecraftServer')
     this.say('Saving world & updating stats...')
     this.saveAll()
-    await syncMinecraftPlayerData()
+    try {
+      await syncMinecraftPlayerData()
+    } catch (e) {
+      logger.alert('Failed to sync player data', 'MinecraftServer')
+    }
     logger.success('Heartbeat complete!', 'MinecraftServer')
   }
 
