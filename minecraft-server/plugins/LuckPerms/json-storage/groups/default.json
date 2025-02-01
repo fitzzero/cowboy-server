@@ -1,3 +1,11 @@
 {
-  "name": "default"
+  "name": "default",
+  "permissions": {
+    "essentials.help": true,
+    "essentials.spawn": true,
+    "essentials.home": true
+  },
+  "meta": {
+    "prefix": "&7[Default] "
+  }
 }

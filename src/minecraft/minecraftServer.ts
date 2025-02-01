@@ -2,6 +2,7 @@ import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
 import * as readline from 'readline'
 import * as path from 'path'
 import { logger } from '../cowboy-database/logger'
+import { syncMinecraftPlayerData } from './minecraftPlayerData'
 
 class MinecraftServer {
   private serverProcess: ChildProcessWithoutNullStreams | null = null
@@ -33,8 +34,7 @@ class MinecraftServer {
     this.serverProcess.stdout.on('data', data => {
       console.log(`MC: ${data}`)
       if (data.toString().includes('For help, type "help"')) {
-        this.ready = true
-        logger.success('Server is ready!', 'MinecraftServer')
+        this.onReady()
       }
     })
 
@@ -48,14 +48,12 @@ class MinecraftServer {
     })
   }
 
-  async whitelistAdd(name: string) {
-    this.writeCommand(`whitelist add ${name}`)
+  // Message
+  async say(message: string) {
+    this.writeCommand(`say ${message}`)
   }
 
-  async whitelistRemove(name: string) {
-    this.writeCommand(`whitelist remove ${name}`)
-  }
-
+  // OP
   async op(name: string) {
     this.writeCommand(`op ${name}`)
   }
@@ -64,7 +62,51 @@ class MinecraftServer {
     this.writeCommand(`deop ${name}`)
   }
 
-  writeCommand(command: string) {
+  // Whitelist
+  async whitelistAdd(name: string) {
+    this.writeCommand(`whitelist add ${name}`)
+  }
+
+  async whitelistRemove(name: string) {
+    this.writeCommand(`whitelist remove ${name}`)
+  }
+
+  // World
+  async saveAll() {
+    this.writeCommand('save-all')
+  }
+
+  // Private
+  private async heartbeat() {
+    logger.start('Heartbeat', 'MinecraftServer')
+    this.say('Saving world & updating stats...')
+    this.saveAll()
+    await syncMinecraftPlayerData()
+    logger.success('Heartbeat complete!', 'MinecraftServer')
+  }
+
+  private onReady() {
+    this.ready = true
+    this.writeCommand('save-off') // Disable auto-saving
+    logger.success('Server is ready!', 'MinecraftServer')
+
+    const interval = process.env.NODE_ENV === 'development' ? 60000 : 600000 // 1 minute in dev, 10 minutes in prod
+    setInterval(() => {
+      this.heartbeat()
+    }, interval)
+  }
+
+  private readOutput(callback: (data: string) => void) {
+    if (this.serverProcess) {
+      this.serverProcess.stdout.on('data', data => {
+        callback(data.toString())
+      })
+    } else {
+      console.error('Server process is not running.')
+    }
+  }
+
+  private writeCommand(command: string) {
     // If this.ready is false, await wait for 30s then check again
     if (!this.ready) {
       logger.alert(
@@ -79,16 +121,6 @@ class MinecraftServer {
 
     if (this.serverProcess) {
       this.serverProcess.stdin.write(`${command}\n`)
-    } else {
-      console.error('Server process is not running.')
-    }
-  }
-
-  readOutput(callback: (data: string) => void) {
-    if (this.serverProcess) {
-      this.serverProcess.stdout.on('data', data => {
-        callback(data.toString())
-      })
     } else {
       console.error('Server process is not running.')
     }
