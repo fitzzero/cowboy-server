@@ -1,12 +1,10 @@
 import * as path from 'path'
-import { loadJsonFile, writeJsonFile } from '../json'
-import axios from 'axios'
+import axios, { AxiosInstance } from 'axios'
 import { logger } from '../cowboy-database/logger'
 
 class MinecraftServer {
   private serverDirectory: string
-  private whitelistPath: string
-  private api: string
+  private api?: AxiosInstance
   private apiToken?: string
 
   constructor() {
@@ -14,30 +12,73 @@ class MinecraftServer {
     if (!this.serverDirectory) {
       throw new Error('MINECRAFT_DIRECTORY environment variable not set')
     }
-    this.whitelistPath = path.join(this.serverDirectory, 'whitelist.json')
-    this.api = 'http://localhost:8000/api'
     this.authenticate()
   }
 
   private async authenticate() {
     try {
-      const response = await axios.post(`${this.api}/authenticate`, {
-        username: 'admin',
-        password: 'local',
+      const response = await axios.post(
+        `http://localhost:8000/api/authenticate`,
+        {
+          username: 'admin',
+          password: 'local',
+        }
+      )
+      this.apiToken = response.data
+      this.api = axios.create({
+        baseURL: 'http://localhost:8000/api',
+        headers: {
+          Authorization: `Bearer ${response.data}`,
+          accept: 'application/json',
+        },
       })
-      this.apiToken = response.data.token
-      logger.success('Authenticated successfully.', 'MinecraftServer')
+      const server = await this.server()
+      this.api?.post('/whitelist/players/add', { name: 'testuser' })
+      logger.success(`Connected to: ${server.motd}`, 'MinecraftServer')
     } catch (error) {
       logger.alert('Error authenticating:' + error, 'MinecraftServer')
     }
   }
 
-  fetchWhitelist = async (): Promise<any> => {
-    return await loadJsonFile(this.whitelistPath)
+  async server() {
+    const response = await this.api?.get('/server')
+    return response?.data as {
+      maxPlayers: number
+      name: string
+      version: string
+      bukkitVersion: string
+      address: string
+      port: number
+      motd: string
+    }
   }
 
-  setWhitelist = async (whitelist: any): Promise<void> => {
-    await writeJsonFile(this.whitelistPath, whitelist)
+  async whitelistAdd(name: string) {
+    try {
+      const response = await this.api?.post('/whitelist/players/add', { name })
+      logger.success('Added player to whitelist.', 'MinecraftServer')
+      return response?.data
+    } catch (error) {
+      logger.alert(
+        'Error adding player to whitelist:' + error,
+        'MinecraftServer'
+      )
+    }
+  }
+
+  async whitelistRemove(name: string) {
+    try {
+      const response = await this.api?.post('/whitelist/players/remove', {
+        name,
+      })
+      logger.success('Removed player from whitelist.', 'MinecraftServer')
+      return response?.data
+    } catch (error) {
+      logger.alert(
+        'Error removing player from whitelist:' + error,
+        'MinecraftServer'
+      )
+    }
   }
 }
 
