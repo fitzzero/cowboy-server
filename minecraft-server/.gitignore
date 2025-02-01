@@ -20,6 +20,7 @@ crash-reports/
 
 # Ignore things that server sets
 whitelist.json
+ops.json
 
 # Ignore user data
 plugins/Essentials/userdata/
@@ -30,3 +31,7 @@ usercache.json
 .console_history
 plugins/LuckPerms/json-storage/actions.txt
 plugins/LuckPerms/json-storage/uuidcache.txt
+
+# Essentials
+plugins/Essentials/usermap.bin
+plugins/Essentials/uuids.bin
