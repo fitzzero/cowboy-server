@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "build": "tsc --project tsconfig.json",
+    "build": "yarn prisma:migrate && yarn prisma:generate && tsc --project tsconfig.json",
     "start": "node dist/index.js",
     "submodule": "git submodule init && git submodule update",
     "prisma:migrate": "prisma migrate deploy",
