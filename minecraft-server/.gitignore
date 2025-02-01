@@ -1,0 +1,25 @@
+# Ignore Minecraft world data
+world/
+world_nether/
+world_the_end/
+
+# Ignore logs
+logs/
+*.log
+
+# Ignore cache
+cache/
+*.cache
+
+# Ignore temporary files
+*.tmp
+*.temp
+
+# Ignore crash reports
+crash-reports/
+
+# Ignore server properties
+server.properties
+
+# Ignore things that server sets
+whitelist.json

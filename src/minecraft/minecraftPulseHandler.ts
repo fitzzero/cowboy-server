@@ -31,11 +31,11 @@ const handleCreate = async (event: CreateEvent) => {
 }
 
 const handleUpdate = async (event: UpdateEvent) => {
-  // @ts-ignore before exists
+  //@ts-ignore before exists
   minecraftServer.whitelistRemove(event.before.name)
   minecraftServer.whitelistAdd(event.after.name)
 }
 
 const handleDelete = async (event: DeleteEvent) => {
-  minecraftServer.whitelistAdd(event.deleted.name)
+  minecraftServer.whitelistRemove(event.deleted.name)
 }

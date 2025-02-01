@@ -1,85 +1,91 @@
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
+import * as readline from 'readline'
 import * as path from 'path'
-import axios, { AxiosInstance } from 'axios'
 import { logger } from '../cowboy-database/logger'
 
 class MinecraftServer {
-  private serverDirectory: string
-  private api?: AxiosInstance
-  private apiToken?: string
+  private serverProcess: ChildProcessWithoutNullStreams | null = null
+  private rl: readline.Interface | null = null
+  private ready: boolean = false
 
-  constructor() {
-    this.serverDirectory = process.env.MINECRAFT_DIRECTORY as string
-    if (!this.serverDirectory) {
-      throw new Error('MINECRAFT_DIRECTORY environment variable not set')
-    }
-    this.authenticate()
-  }
+  constructor() {}
 
-  private async authenticate() {
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/api/authenticate`,
-        {
-          username: 'admin',
-          password: 'local',
-        }
-      )
-      this.apiToken = response.data
-      this.api = axios.create({
-        baseURL: 'http://localhost:8000/api',
-        headers: {
-          Authorization: `Bearer ${response.data}`,
-          accept: 'application/json',
-        },
-      })
-      const server = await this.server()
-      this.api?.post('/whitelist/players/add', { name: 'testuser' })
-      logger.success(`Connected to: ${server.motd}`, 'MinecraftServer')
-    } catch (error) {
-      logger.alert('Error authenticating:' + error, 'MinecraftServer')
-    }
-  }
+  launchServer() {
+    const jarPath = path.resolve(
+      __dirname,
+      '../../minecraft-server/paper-1.21.4-134.jar'
+    )
+    const serverDir = path.resolve(__dirname, '../../minecraft-server')
 
-  async server() {
-    const response = await this.api?.get('/server')
-    return response?.data as {
-      maxPlayers: number
-      name: string
-      version: string
-      bukkitVersion: string
-      address: string
-      port: number
-      motd: string
-    }
+    this.serverProcess = spawn(
+      'java',
+      ['-Xms4G', '-Xmx4G', '-jar', jarPath, '--nogui'],
+      {
+        cwd: serverDir,
+      }
+    )
+
+    this.rl = readline.createInterface({
+      input: this.serverProcess.stdout,
+      output: this.serverProcess.stdin,
+    })
+
+    this.serverProcess.stdout.on('data', data => {
+      console.log(`STDOUT: ${data}`)
+      if (data.toString().includes('[Vault] Checking for Updates')) {
+        this.ready = true
+        logger.success('Server is ready!', 'MinecraftServer')
+      }
+    })
+
+    this.serverProcess.stderr.on('data', data => {
+      console.error(`STDERR: ${data}`)
+    })
+
+    this.serverProcess.on('close', code => {
+      console.log(`Minecraft server process exited with code ${code}`)
+      this.rl?.close()
+    })
   }
 
   async whitelistAdd(name: string) {
-    try {
-      const response = await this.api?.post('/whitelist/players/add', { name })
-      logger.success('Added player to whitelist.', 'MinecraftServer')
-      return response?.data
-    } catch (error) {
-      logger.alert(
-        'Error adding player to whitelist:' + error,
-        'MinecraftServer'
-      )
-    }
+    this.writeCommand(`whitelist add ${name}`)
   }
 
   async whitelistRemove(name: string) {
-    try {
-      const response = await this.api?.post('/whitelist/players/remove', {
-        name,
-      })
-      logger.success('Removed player from whitelist.', 'MinecraftServer')
-      return response?.data
-    } catch (error) {
+    this.writeCommand(`whitelist remove ${name}`)
+  }
+
+  writeCommand(command: string) {
+    // If this.ready is false, await wait for 30s then check again
+    if (!this.ready) {
       logger.alert(
-        'Error removing player from whitelist:' + error,
+        'Server not ready, delaying command for 30s...',
         'MinecraftServer'
       )
+      setTimeout(() => {
+        this.writeCommand(command)
+      }, 30000)
+      return
+    }
+
+    if (this.serverProcess) {
+      this.serverProcess.stdin.write(`${command}\n`)
+    } else {
+      console.error('Server process is not running.')
+    }
+  }
+
+  readOutput(callback: (data: string) => void) {
+    if (this.serverProcess) {
+      this.serverProcess.stdout.on('data', data => {
+        callback(data.toString())
+      })
+    } else {
+      console.error('Server process is not running.')
     }
   }
 }
 
+// Example usage:
 export const minecraftServer = new MinecraftServer()
