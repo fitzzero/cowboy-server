@@ -2,6 +2,14 @@
   "name": "default",
   "permissions": [
     {
+      "permission": "essentials.balance",
+      "value": true
+    },
+    {
+      "permission": "essentials.getpos",
+      "value": true
+    },
+    {
       "permission": "essentials.help",
       "value": true
     },
@@ -14,11 +22,11 @@
       "value": true
     },
     {
-      "permission": "essentials.msg",
+      "permission": "essentials.list",
       "value": true
     },
     {
-      "permission": "essentials.balance",
+      "permission": "essentials.msg",
       "value": true
     },
     {
@@ -28,11 +36,6 @@
     {
       "permission": "essentials.sell",
       "value": true
-    },
-    {
-      "permission": "essentials.list",
-      "value": true
     }
-  ],
-  "prefixes": []
+  ]
 }
