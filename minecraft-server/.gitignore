@@ -35,3 +35,7 @@ plugins/LuckPerms/json-storage/uuidcache.txt
 # Essentials
 plugins/Essentials/usermap.bin
 plugins/Essentials/uuids.bin
+
+# World Edit
+plugins/FastAsyncWorldEdit/schematics
+plugins/FastAsyncWorldEdit/clipboard
