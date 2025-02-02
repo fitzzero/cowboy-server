@@ -62,15 +62,19 @@
       "value": true
     },
     {
-      "permission": "essentials.signs.use.warp",
-      "value": true
-    },
-    {
       "permission": "essentials.spawn",
       "value": true
     },
     {
       "permission": "essentials.warp",
+      "value": true
+    },
+    {
+      "permission": "essentials.warp.*",
+      "value": true
+    },
+    {
+      "permission": "essentials.signs.use.warp",
       "value": true
     }
   ]
