@@ -14,7 +14,7 @@ class MinecraftServer {
   launchServer() {
     const jarPath = path.resolve(
       __dirname,
-      '../../minecraft-server/paper-1.21.4-134.jar'
+      '../../minecraft-server/paper-1.21.4-136.jar'
     )
     const serverDir = path.resolve(__dirname, '../../minecraft-server')
 
