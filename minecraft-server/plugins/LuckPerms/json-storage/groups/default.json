@@ -36,6 +36,10 @@
     {
       "permission": "essentials.sell",
       "value": true
+    },
+    {
+      "permission": "auraskills.multiplier.100",
+      "value": true
     }
   ]
 }
