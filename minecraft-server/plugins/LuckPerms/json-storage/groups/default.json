@@ -2,6 +2,10 @@
   "name": "default",
   "permissions": [
     {
+      "permission": "auraskills.multiplier.100",
+      "value": true
+    },
+    {
       "permission": "essentials.balance",
       "value": true
     },
@@ -38,7 +42,7 @@
       "value": true
     },
     {
-      "permission": "auraskills.multiplier.100",
+      "permission": "essentials.spawn",
       "value": true
     }
   ]
