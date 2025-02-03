@@ -20,7 +20,7 @@ class MinecraftServer {
 
     this.serverProcess = spawn(
       'java',
-      ['-Xms4G', '-Xmx4G', '-jar', jarPath, '--nogui'],
+      ['-Xms24G', '-Xmx24G', '-jar', jarPath, '--nogui'],
       {
         cwd: serverDir,
       }
