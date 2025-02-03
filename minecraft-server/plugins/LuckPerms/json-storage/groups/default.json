@@ -42,7 +42,39 @@
       "value": true
     },
     {
+      "permission": "essentials.signs.create.buy",
+      "value": true
+    },
+    {
+      "permission": "essentials.signs.create.sell",
+      "value": true
+    },
+    {
+      "permission": "essentials.signs.use.buy",
+      "value": true
+    },
+    {
+      "permission": "essentials.signs.use.kit",
+      "value": true
+    },
+    {
+      "permission": "essentials.signs.use.sell",
+      "value": true
+    },
+    {
       "permission": "essentials.spawn",
+      "value": true
+    },
+    {
+      "permission": "essentials.warp",
+      "value": true
+    },
+    {
+      "permission": "essentials.warp.*",
+      "value": true
+    },
+    {
+      "permission": "essentials.signs.use.warp",
       "value": true
     }
   ]

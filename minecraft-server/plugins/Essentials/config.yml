@@ -365,8 +365,8 @@ enabledSigns:
   - sell
   - trade
   #- free
-  #- warp
-  #- kit
+  - warp
+  - kit
   - mail
   #- enchant
   #- gamemode
