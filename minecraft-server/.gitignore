@@ -39,3 +39,10 @@ plugins/Essentials/uuids.bin
 # World Edit
 plugins/FastAsyncWorldEdit/schematics
 plugins/FastAsyncWorldEdit/clipboard
+
+# World Map
+plugins/squaremap/data
+plugins/squaremap/web
+
+# AuraSkills
+plugins/AuraSkills/backups
