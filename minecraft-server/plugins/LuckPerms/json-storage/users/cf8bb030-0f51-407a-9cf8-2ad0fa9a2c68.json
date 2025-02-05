@@ -1,0 +1,10 @@
+{
+  "uuid": "cf8bb030-0f51-407a-9cf8-2ad0fa9a2c68",
+  "name": "EvnEssnce",
+  "primaryGroup": "crowned",
+  "parents": [
+    {
+      "group": "crowned"
+    }
+  ]
+}

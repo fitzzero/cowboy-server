@@ -1,0 +1,14 @@
+{
+  "name": "silver",
+  "parents": [
+    {
+      "group": "default"
+    }
+  ],
+  "prefixes": [
+    {
+      "prefix": "&7[#2] ",
+      "priority": 1
+    }
+  ]
+}

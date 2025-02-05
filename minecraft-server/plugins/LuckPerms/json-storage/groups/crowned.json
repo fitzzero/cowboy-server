@@ -1,0 +1,14 @@
+{
+  "name": "crowned",
+  "parents": [
+    {
+      "group": "default"
+    }
+  ],
+  "prefixes": [
+    {
+      "prefix": "&6[#1] ",
+      "priority": 1
+    }
+  ]
+}
