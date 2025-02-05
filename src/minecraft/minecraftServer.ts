@@ -7,7 +7,11 @@ import { syncMinecraftPlayerData } from './minecraftPlayerData'
 class MinecraftServer {
   private serverProcess: ChildProcessWithoutNullStreams | null = null
   private rl: readline.Interface | null = null
-  private ready: boolean = false
+  private isReady: boolean = false
+  private isStopping: boolean = false
+  private isStopped: boolean = false
+  private heartbeatInterval: NodeJS.Timeout | null = null
+  private restartOnClose: boolean = true
 
   constructor() {}
 
@@ -33,8 +37,14 @@ class MinecraftServer {
 
     this.serverProcess.stdout.on('data', data => {
       console.log(`MC: ${data}`)
-      if (data.toString().includes('For help, type "help"')) {
+      const content = data.toString().split(':')?.[3]
+      // Notice that server is ready
+      if (content?.includes('For help, type "help"')) {
         this.onReady()
+      }
+      // Notice that server is stopping
+      if (content?.includes('Stopping server')) {
+        this.noticeStop()
       }
     })
 
@@ -43,8 +53,8 @@ class MinecraftServer {
     })
 
     this.serverProcess.on('close', code => {
-      console.log(`Minecraft server process exited with code ${code}`)
-      this.rl?.close()
+      console.log(`MC: Minecraft server process exited with code ${code}`)
+      this.handleStopComplete()
     })
   }
 
@@ -75,6 +85,37 @@ class MinecraftServer {
     this.writeCommand(`deop ${name}`)
   }
 
+  // Stop
+  async stop() {
+    if (!this.isStopping) {
+      logger.start('Issuing stop command', 'MinecraftServer')
+      this.writeCommand('stop')
+    }
+  }
+
+  async noticeStop() {
+    logger.start('Detected server stopping', 'MinecraftServer')
+    this.isStopping = true
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval)
+      this.heartbeatInterval = null
+      logger.success('Cleared heartbeat', 'MinecraftServer')
+    }
+  }
+
+  async handleStopComplete() {
+    logger.success('Server stopped', 'MinecraftServer')
+    this.isStopping = false
+    this.isStopped = true
+    this.serverProcess = null // Clear the serverProcess reference
+    this.rl?.close() // Clear the readline interface reference
+    if (!this.restartOnClose) return
+    setTimeout(() => {
+      this.launchServer()
+      logger.start('Restarting server', 'MinecraftServer')
+    }, 10000)
+  }
+
   // Whitelist
   async whitelistAdd(name: string) {
     this.writeCommand(`whitelist add ${name}`)
@@ -91,6 +132,7 @@ class MinecraftServer {
 
   // Private
   private async heartbeat() {
+    if (this.isStopped || this.isStopping || !this.isReady) return
     logger.start('Heartbeat', 'MinecraftServer')
     this.say('Saving world & updating stats...')
     this.saveAll()
@@ -103,14 +145,19 @@ class MinecraftServer {
   }
 
   private onReady() {
-    this.ready = true
+    this.isReady = true
+    this.isStopped = false
+    this.isStopping = false
+    this.restartOnClose = true
     this.writeCommand('save-off') // Disable auto-saving
     logger.success('Server is ready!', 'MinecraftServer')
 
-    const interval = process.env.NODE_ENV === 'development' ? 60000 : 600000 // 1 minute in dev, 10 minutes in prod
-    setInterval(() => {
+    // 1 minute in dev, 10 minutes in prod
+    const interval = process.env.NODE_ENV === 'development' ? 60000 : 600000
+    // Set the heartbeat interval and store the interval ID
+    this.heartbeatInterval = setInterval(() => {
       this.heartbeat()
-    }, interval)
+    }, interval) // Adjust the interval as needed
   }
 
   private readOutput(callback: (data: string) => void) {
@@ -125,7 +172,7 @@ class MinecraftServer {
 
   private writeCommand(command: string) {
     // If this.ready is false, await wait for 30s then check again
-    if (!this.ready) {
+    if (!this.isReady) {
       logger.alert(
         'Server not ready, delaying command for 30s...',
         'MinecraftServer'
