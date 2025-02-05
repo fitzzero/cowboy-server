@@ -116,7 +116,7 @@ class MinecraftServer {
     setTimeout(() => {
       this.launchServer()
       logger.start('Restarting server', 'MinecraftServer')
-    }, 10000)
+    }, 30000)
   }
 
   async scheduleStop() {
