@@ -22,11 +22,13 @@
     "@prisma/extension-pulse": "^1.2.0",
     "@types/body-parser": "^1.19.5",
     "@types/js-yaml": "^4.0.9",
+    "@types/node-schedule": "^2.1.7",
     "axios": "^1.7.9",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "js-yaml": "^4.1.0",
+    "node-schedule": "^2.1.1",
     "socket.io": "^4.8.1",
     "typescript": "^5.7.3"
   },

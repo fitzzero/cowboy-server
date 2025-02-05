@@ -1,6 +1,7 @@
 import { spawn, ChildProcessWithoutNullStreams } from 'child_process'
 import * as readline from 'readline'
 import * as path from 'path'
+import * as schedule from 'node-schedule'
 import { logger } from '../cowboy-database/logger'
 import { syncMinecraftPlayerData } from './minecraftPlayerData'
 
@@ -13,7 +14,9 @@ class MinecraftServer {
   private heartbeatInterval: NodeJS.Timeout | null = null
   private restartOnClose: boolean = true
 
-  constructor() {}
+  constructor() {
+    this.scheduleDailyRestart()
+  }
 
   launchServer() {
     const jarPath = path.resolve(
@@ -116,6 +119,21 @@ class MinecraftServer {
     }, 10000)
   }
 
+  async scheduleStop() {
+    logger.start('Scheduling server stop', 'MinecraftServer')
+    this.say('Server will initiate its daily restart in 2 minutes!')
+    setTimeout(() => {
+      this.say('Server will initiate its daily restart in 1 minute!')
+    }, 60000)
+    setTimeout(() => {
+      this.say('Server will initiate its daily restart in 30 seconds!')
+    }, 90000)
+    setTimeout(() => {
+      this.stop()
+      this.restartOnClose = true
+    }, 120000)
+  }
+
   // Whitelist
   async whitelistAdd(name: string) {
     this.writeCommand(`whitelist add ${name}`)
@@ -168,6 +186,13 @@ class MinecraftServer {
     } else {
       console.error('Server process is not running.')
     }
+  }
+
+  private scheduleDailyRestart() {
+    // Schedule the server to restart every day at 4:00 AM
+    schedule.scheduleJob('0 4 * * *', () => {
+      this.scheduleStop()
+    })
   }
 
   private writeCommand(command: string) {
