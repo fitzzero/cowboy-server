@@ -2,7 +2,7 @@
   "name": "default",
   "permissions": [
     {
-      "permission": "auraskills.multiplier.100",
+      "permission": "auraskills.multiplier.200",
       "value": true
     },
     {
