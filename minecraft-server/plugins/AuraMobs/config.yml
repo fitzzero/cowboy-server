@@ -1,0 +1,106 @@
+language: en
+mob_defaults:
+  damage:
+    formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 20)'
+    max: ''
+  health:
+    formula: '{mob_health} * (1 + ({level} - 1) / 20)'
+    max: ''
+mob_level:
+  formula: ({distance}-2500)*0.03
+  backup_formula: ({distance}-2500)*0.03
+  max_level: 100
+bosses:
+  enabled: true
+  health:
+    formula: '{mob_health} * (1 + ({level} - 1) / 20)'
+    max: ''
+  damage:
+    formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 20)'
+    max: ''
+  level:
+    formula: '{sumlevel}/{playercount}'
+    backup_formula: '{distance}*0.01'
+    max_level: 50
+player_level:
+  check_radius: 128
+  formula: '{average}'
+custom_name:
+  enabled: true
+  format: '&6Lvl {lvl}&8 | &f{mob} &8| &c&l❤ &f{health}'
+  health_rounding_places: 0
+  display_by_range: true
+  display_range: 5
+  allow_override: true
+skills_xp:
+  enabled: true
+  default_formula: '{source_xp} * (1 + {mob_level} / 50)'
+worlds:
+  type: blacklist
+  list:
+  - disabledworld
+  - worldexample_*
+mob_replacements:
+  type: whitelist
+  list:
+  - '*'
+  - ZOMBIE
+spawn_reasons:
+- NATURAL
+- JOCKEY
+- SPAWNER
+- TRIAL_SPAWNER
+- EGG
+- SPAWNER_EGG
+- LIGHTNING
+- BUILD_SNOWMAN
+- BUILD_IRONGOLEM
+- BUILD_WITHER
+- VILLAGE_DEFENSE
+- VILLAGE_INVASION
+- BREEDING
+- SLIME_SPLIT
+- REINFORCEMENTS
+- NETHER_PORTAL
+- DISPENSE_EGG
+- INFECTION
+- CURED
+- OCELOT_BABY
+- SILVERFISH_BLOCK
+- MOUNT
+- TRAP
+- ENDER_PEARL
+- SHOULDER_ENTITY
+- DROWNED
+- SHEARED
+- EXPLOSION
+- RAID
+- PATROL
+- BEEHIVE
+- PIGLIN_ZOMBIFIED
+- COMMAND
+- CUSTOM
+- DEFAULT
+scaling:
+  override: false
+  levels:
+    10-20:
+      scale: 1-1.2
+    20-30:
+      scale: 1.2-1.3
+    30-40:
+      scale: 1.3-1.4
+    40-50:
+      scale: 1.4-1.5
+    50-60:
+      scale: 1.5-1.6
+    60-70:
+      scale: 1.6-1.7
+    70-80:
+      scale: 1.7-1.8
+    80-90:
+      scale: 1.8-1.9
+    90-95:
+      scale: 1.9-2
+    95-100:
+      scale: 2-3
