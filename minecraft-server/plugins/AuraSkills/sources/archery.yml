@@ -1,7 +1,8 @@
 default:
   type: entity
   entity: '{key}'
-  trigger: death
+  trigger: damage
+  scale_xp_with_health: true
   damager: projectile
   menu_item:
     material: '{key}_spawn_egg'
