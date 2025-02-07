@@ -148,11 +148,16 @@ class MinecraftServer {
     this.writeCommand('save-all')
   }
 
+  async saveSkills() {
+    this.writeCommand('sk save')
+  }
+
   // Private
   private async heartbeat() {
     if (this.isStopped || this.isStopping || !this.isReady) return
     logger.start('Heartbeat', 'MinecraftServer')
     this.say('Saving world & updating stats...')
+    this.saveSkills()
     this.saveAll()
     try {
       await syncMinecraftPlayerData()
