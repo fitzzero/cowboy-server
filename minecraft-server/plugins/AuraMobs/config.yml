@@ -1,10 +1,10 @@
 language: en
 mob_defaults:
   damage:
-    formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 20)'
+    formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 5)'
     max: ''
   health:
-    formula: '{mob_health} * (1 + ({level} - 1) / 20)'
+    formula: '{mob_health} * (1 + ({level} - 1) / 10)'
     max: ''
 mob_level:
   formula: ({distance}-2500)*0.03
@@ -13,10 +13,10 @@ mob_level:
 bosses:
   enabled: true
   health:
-    formula: '{mob_health} * (1 + ({level} - 1) / 20)'
+    formula: '{mob_health} * (1 + ({level} - 1) / 15)'
     max: ''
   damage:
-    formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 20)'
+    formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 15)'
     max: ''
   level:
     formula: '{sumlevel}/{playercount}'
@@ -34,7 +34,7 @@ custom_name:
   allow_override: true
 skills_xp:
   enabled: true
-  default_formula: '{source_xp} * (1 + {mob_level} / 50)'
+  default_formula: '{source_xp} * (1 + {mob_level} / 30)'
 worlds:
   type: blacklist
   list:
