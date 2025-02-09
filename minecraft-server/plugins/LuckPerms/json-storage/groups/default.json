@@ -2,6 +2,10 @@
   "name": "default",
   "permissions": [
     {
+      "permission": "essentials.warp.*",
+      "value": true
+    },
+    {
       "permission": "auraskills.multiplier.200",
       "value": true
     },
@@ -42,6 +46,10 @@
       "value": true
     },
     {
+      "permission": "essentials.signs.color",
+      "value": true
+    },
+    {
       "permission": "essentials.signs.create.buy",
       "value": true
     },
@@ -62,19 +70,15 @@
       "value": true
     },
     {
+      "permission": "essentials.signs.use.warp",
+      "value": true
+    },
+    {
       "permission": "essentials.spawn",
       "value": true
     },
     {
       "permission": "essentials.warp",
-      "value": true
-    },
-    {
-      "permission": "essentials.warp.*",
-      "value": true
-    },
-    {
-      "permission": "essentials.signs.use.warp",
       "value": true
     }
   ]
