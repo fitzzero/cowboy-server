@@ -157,8 +157,11 @@ class MinecraftServer {
     if (this.isStopped || this.isStopping || !this.isReady) return
     logger.start('Heartbeat', 'MinecraftServer')
     this.say('Saving world & updating stats...')
+    await this.sleep(1000)
     this.saveSkills()
+    await this.sleep(5000)
     this.saveAll()
+    await this.sleep(5000)
     try {
       await syncMinecraftPlayerData()
     } catch (e) {
@@ -198,6 +201,10 @@ class MinecraftServer {
     schedule.scheduleJob('0 4 * * *', () => {
       this.scheduleStop()
     })
+  }
+
+  private sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms))
   }
 
   private writeCommand(command: string) {
