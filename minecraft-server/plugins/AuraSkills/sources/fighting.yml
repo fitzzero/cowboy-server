@@ -150,7 +150,7 @@ sources:
   ender_dragon:
     xp: 7000.0
   wither:
-    xp: 7000.0
+    xp: 3000.0
   axolotl:
     xp: 3.5
   glow_squid:

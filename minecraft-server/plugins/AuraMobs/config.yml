@@ -19,7 +19,7 @@ bosses:
     formula: '{mob_damage} + ({mob_damage} * ({level} - 1) / 10)'
     max: ''
   level:
-    formula: '{sumlevel}/{playercount}'
+    formula: ({playercount} * 5) + ({distance}-2500)*0.01
     backup_formula: '{distance}*0.01'
     max_level: 50
 player_level:
