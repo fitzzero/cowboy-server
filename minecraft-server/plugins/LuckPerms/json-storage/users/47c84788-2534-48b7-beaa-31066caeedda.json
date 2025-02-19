@@ -1,10 +1,10 @@
 {
   "uuid": "47c84788-2534-48b7-beaa-31066caeedda",
   "name": "FitzZero",
-  "primaryGroup": "silver",
+  "primaryGroup": "crowned",
   "parents": [
     {
-      "group": "silver"
+      "group": "crowned"
     }
   ]
 }
